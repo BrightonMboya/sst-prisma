@@ -1,28 +1,18 @@
+import { Resource } from "sst";
 import { PrismaClient } from "@prisma/client";
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 export const prisma =
-  globalForPrisma.prisma ??
+  globalForPrisma.prisma ||
   new PrismaClient({
-  
-    log:
-      process.env.NODE_ENV === "development"
-        ? ["query", "error", "warn"]
-        : ["error"],
-    errorFormat: "pretty",
+    datasources: {
+      db: {
+        url: Resource.DATABASE_URL.value
+      },
+    },
   });
 
-export const db = globalForPrisma.prisma ?? prisma;
+// Create single client in `sst dev`
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-export const getPrisma = (database_url: string) => {
- 
-  const prisma = new PrismaClient({
-    datasourceUrl: database_url,
-  });
-  return prisma;
-};
-
-// if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

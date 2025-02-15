@@ -1,14 +1,11 @@
-import { PrismaClient } from "@repo/db/types";
 import { Hono } from "hono";
 import { handle } from "hono/aws-lambda";
-import withDB from "./middlewares/with-db";
+import { prisma } from "@repo/db";
 
 const app = new Hono();
-app.use(withDB);
 
 app.get("/", async (c) => {
-  const db: PrismaClient = c.get("db");
-  const blogs = await db.posts.findMany();
+  const blogs = await prisma.posts.findMany();
   return c.json(blogs, 200);
 });
 
