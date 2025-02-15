@@ -1,0 +1,15 @@
+{
+  "name": "sst-prisma-demo",
+  "private": true,
+  "engines": {
+    "node": ">=v18.16.0"
+  },
+  "packageManager": "pnpm@8.5.0",
+  "scripts": {},
+  "dependencies": {
+    "eslint": "^8.40.0",
+    "sst": "3.7.7",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {}
+}
